@@ -5,9 +5,9 @@ import {
   useDispatch as dispatchHook,
   useSelector as selectorHook
 } from 'react-redux';
-import { mainSlice } from './slices/mainSlice';
+import { burgerSlice } from './slices/burgerSlice';
 
-const rootReducer = combineSlices(mainSlice);
+const rootReducer = combineSlices(burgerSlice);
 
 const store = configureStore({
   reducer: rootReducer,
