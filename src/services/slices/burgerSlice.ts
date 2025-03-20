@@ -1,18 +1,13 @@
 import { getIngredientsApi } from '@api';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import {
-  TConstructorIngredient,
-  TIngredient,
-  TUser,
-  TOrder
-} from '@utils-types';
+import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 
 export const getIngredients = createAsyncThunk(
   'ingredient/getIngredients',
   async () => getIngredientsApi()
 );
 
-interface TrackListState {
+interface burgerState {
   ingredients: TIngredient[];
   isIngredientsLoading: boolean;
   error: string | null | undefined;
@@ -24,7 +19,7 @@ interface TrackListState {
   orderModalData: TOrder | null;
 }
 
-const initialState: TrackListState = {
+const initialState: burgerState = {
   ingredients: [],
   isIngredientsLoading: false,
   error: null,

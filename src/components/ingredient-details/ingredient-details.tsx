@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Preloader } from '../ui/preloader';
 import { IngredientDetailsUI } from '../ui/ingredient-details';
 import { useParams } from 'react-router-dom';
@@ -7,20 +7,13 @@ import {
   getIngredientsSelector
 } from '../../services/slices/burgerSlice';
 import { useDispatch, useSelector } from '../../services/store';
+import { TIngredient } from '@utils-types';
 
 export const IngredientDetails: FC = () => {
-  /** TODO: взять переменную из стора */
+  // /** TODO: взять переменную из стора */
   const { id } = useParams<'id'>();
   const ingredients = useSelector(getIngredientsSelector);
-  const ingredientData =
-    ingredients.find((element) => element._id === id) || undefined;
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (!ingredients || ingredients.length === 0) {
-      dispatch(getIngredients());
-    }
-  }, [dispatch, ingredients]);
-
+  const ingredientData = ingredients.find((element) => element._id === id);
   if (!ingredientData) {
     return <Preloader />;
   }

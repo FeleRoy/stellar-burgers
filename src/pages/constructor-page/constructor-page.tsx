@@ -13,11 +13,6 @@ import {
 
 export const ConstructorPage: FC = () => {
   const isIngredientsLoading = useSelector(getIsIngredientsLoading);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, []);
-
   return (
     <>
       {isIngredientsLoading ? (

@@ -14,11 +14,21 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../ProtectedRoute';
+import { useDispatch } from '../../services/store';
+import { useEffect } from 'react';
+import { getIngredients } from '../../services/slices/burgerSlice';
+import { getFeeds } from '../../services/slices/feedSlice';
 
 const App = () => {
   const location = useLocation();
   const backgroundLocation = location.state?.background;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getIngredients());
+    dispatch(getFeeds());
+  }, [dispatch]);
+
   return (
     <>
       <div className={styles.app}>
@@ -63,7 +73,7 @@ const App = () => {
               path='/ingredients/:id'
               element={
                 <Modal
-                  title='Детали ингридиента'
+                  title='Детали ингредиента'
                   onClose={() => {
                     navigate(-1);
                   }}
