@@ -10,15 +10,15 @@ import {
 } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../ProtectedRoute';
 
 const App = () => {
   const location = useLocation();
-  const backgroundLocation = location.state?.backgroundLocation;
-
+  const backgroundLocation = location.state?.background;
+  const navigate = useNavigate();
   return (
     <>
       <div className={styles.app}>
@@ -42,13 +42,19 @@ const App = () => {
             <Route path='/profile' element={<Profile />} />
             <Route path='/profile/orders' element={<ProfileOrders />} />
           </Route>
+          <Route path='/ingredients/:id' element={<IngredientDetails />} />
         </Routes>
         {backgroundLocation && (
           <Routes>
             <Route
               path='/feed/:number'
               element={
-                <Modal title='#number' onClose={() => {}}>
+                <Modal
+                  title='#number'
+                  onClose={() => {
+                    navigate(-1);
+                  }}
+                >
                   <OrderInfo />
                 </Modal>
               }
@@ -56,7 +62,12 @@ const App = () => {
             <Route
               path='/ingredients/:id'
               element={
-                <Modal title='Детали ингридиента' onClose={() => {}}>
+                <Modal
+                  title='Детали ингридиента'
+                  onClose={() => {
+                    navigate(-1);
+                  }}
+                >
                   <IngredientDetails />
                 </Modal>
               }
@@ -65,7 +76,12 @@ const App = () => {
               <Route
                 path='/profile/orders/:number'
                 element={
-                  <Modal title='#number' onClose={() => {}}>
+                  <Modal
+                    title='#number'
+                    onClose={() => {
+                      navigate(-1);
+                    }}
+                  >
                     <OrderInfo />
                   </Modal>
                 }
