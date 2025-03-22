@@ -22,6 +22,7 @@ import { getFeeds } from '../../services/slices/feedSlice';
 const App = () => {
   const location = useLocation();
   const backgroundLocation = location.state?.background;
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -53,6 +54,7 @@ const App = () => {
             <Route path='/profile/orders' element={<ProfileOrders />} />
           </Route>
           <Route path='/ingredients/:id' element={<IngredientDetails />} />
+          <Route path='/feed/:number' element={<OrderInfo />} />
         </Routes>
         {backgroundLocation && (
           <Routes>
@@ -60,7 +62,7 @@ const App = () => {
               path='/feed/:number'
               element={
                 <Modal
-                  title='#number'
+                  title='Детали заказа'
                   onClose={() => {
                     navigate(-1);
                   }}
