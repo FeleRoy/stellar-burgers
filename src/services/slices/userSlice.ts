@@ -48,7 +48,7 @@ interface userState {
   user: TUser;
   isAuthenticated: boolean;
   loading: boolean;
-  error: string | null | undefined;
+  error: string | undefined;
   orders: TOrder[];
 }
 
@@ -56,7 +56,7 @@ const initialState: userState = {
   user: { name: '', email: '' },
   isAuthenticated: false,
   loading: false,
-  error: null,
+  error: undefined,
   orders: []
 };
 
@@ -70,14 +70,15 @@ export const userSlice = createSlice({
   },
   selectors: {
     getUserSelector: (state) => state.user,
-    getIsAuthenticatedSelector: (state) => state.isAuthenticated
+    getIsAuthenticatedSelector: (state) => state.isAuthenticated,
+    getErrorSelector: (state) => state.error
   },
   extraReducers: (builder) => {
     builder
       //=========register=============
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.error = undefined;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.error = action.error.message;
@@ -92,7 +93,7 @@ export const userSlice = createSlice({
       //=========login===============
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.error = undefined;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.error.message;
@@ -107,7 +108,7 @@ export const userSlice = createSlice({
       //=========logout===============
       .addCase(logoutUser.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.error = undefined;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.error = action.error.message;
@@ -121,7 +122,7 @@ export const userSlice = createSlice({
       //=========getUser===============
       .addCase(getUser.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.error = undefined;
       })
       .addCase(getUser.rejected, (state, action) => {
         state.error = action.error.message;
@@ -134,10 +135,11 @@ export const userSlice = createSlice({
       //=========updateUser===============
       .addCase(updateUser.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.error = undefined;
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.error = action.error.message;
+        console.log(action.error.message);
         state.loading = false;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
@@ -147,7 +149,7 @@ export const userSlice = createSlice({
       //=========getOrders===============
       .addCase(getOrders.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.error = undefined;
       })
       .addCase(getOrders.rejected, (state, action) => {
         state.error = action.error.message;
@@ -160,7 +162,7 @@ export const userSlice = createSlice({
   }
 });
 
-export const { getUserSelector, getIsAuthenticatedSelector } =
+export const { getUserSelector, getIsAuthenticatedSelector, getErrorSelector } =
   userSlice.selectors;
 
 export const { authChecked } = userSlice.actions;
