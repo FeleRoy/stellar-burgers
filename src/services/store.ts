@@ -7,8 +7,9 @@ import {
 } from 'react-redux';
 import { burgerSlice } from './slices/burgerSlice';
 import { feedSlice } from './slices/feedSlice';
+import { userSlice } from './slices/userSlice';
 
-const rootReducer = combineSlices(burgerSlice, feedSlice);
+const rootReducer = combineSlices(burgerSlice, feedSlice, userSlice);
 
 const store = configureStore({
   reducer: rootReducer,
