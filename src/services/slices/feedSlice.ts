@@ -45,7 +45,7 @@ export const feedSlice = createSlice({
         state.isLoading = false;
         state.orders = action.payload.orders;
         state.total = action.payload.total;
-        state.total = action.payload.totalToday;
+        state.totalToday = action.payload.totalToday;
       });
   }
 });
