@@ -3,6 +3,7 @@ import {
   Feed,
   ForgotPassword,
   Login,
+  NotFound404,
   Profile,
   ProfileOrders,
   Register,
@@ -37,9 +38,7 @@ const App = () => {
         <Routes location={backgroundLocation || location}>
           <Route path='/' element={<ConstructorPage />} />
           <Route path='/feed' element={<Feed />} />
-          <Route path='/login' element={<ProtectedRoute />}>
-            <Route path='/login' element={<Login />} />
-          </Route>
+          <Route path='/login' element={<Login />} />
           <Route path='/register' element={<ProtectedRoute />}>
             <Route path='/register' element={<Register />} />
           </Route>
@@ -55,6 +54,7 @@ const App = () => {
           </Route>
           <Route path='/ingredients/:id' element={<IngredientDetails />} />
           <Route path='/feed/:number' element={<OrderInfo />} />
+          <Route path='*' element={<NotFound404 />} />
         </Routes>
         {backgroundLocation && (
           <Routes>
