@@ -3,18 +3,18 @@ import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useSelector } from '../../services/store';
 import {
-  getConstructorItems,
-  getOrderModalData,
-  getOrderRequest
+  getConstructorItemsSelector,
+  getOrderModalDataSelector,
+  getOrderRequestSelector
 } from '../../services/slices/burgerSlice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = useSelector(getConstructorItems);
+  const constructorItems = useSelector(getConstructorItemsSelector);
 
-  const orderRequest = useSelector(getOrderRequest);
+  const orderRequest = useSelector(getOrderRequestSelector);
 
-  const orderModalData = useSelector(getOrderModalData);
+  const orderModalData = useSelector(getOrderModalDataSelector);
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;

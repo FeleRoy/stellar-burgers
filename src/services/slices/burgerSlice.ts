@@ -85,10 +85,10 @@ export const burgerSlice = createSlice({
   },
   selectors: {
     getIngredientsSelector: (state) => state.ingredients,
-    getIsIngredientsLoading: (state) => state.isIngredientsLoading,
-    getConstructorItems: (state) => state.constructorItems,
-    getOrderRequest: (state) => state.orderRequest,
-    getOrderModalData: (state) => state.orderModalData
+    getIsIngredientsLoadingSelector: (state) => state.isIngredientsLoading,
+    getConstructorItemsSelector: (state) => state.constructorItems,
+    getOrderRequestSelector: (state) => state.orderRequest,
+    getOrderModalDataSelector: (state) => state.orderModalData
   },
   extraReducers: (builder) => {
     builder
@@ -109,10 +109,10 @@ export const burgerSlice = createSlice({
 
 export const {
   getIngredientsSelector,
-  getIsIngredientsLoading,
-  getConstructorItems,
-  getOrderRequest,
-  getOrderModalData
+  getIsIngredientsLoadingSelector,
+  getConstructorItemsSelector,
+  getOrderRequestSelector,
+  getOrderModalDataSelector
 } = burgerSlice.selectors;
 
 export const {

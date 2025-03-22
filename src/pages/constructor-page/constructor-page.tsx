@@ -8,11 +8,11 @@ import { Preloader } from '../../components/ui';
 import { FC, useEffect } from 'react';
 import {
   getIngredients,
-  getIsIngredientsLoading
+  getIsIngredientsLoadingSelector
 } from '../../services/slices/burgerSlice';
 
 export const ConstructorPage: FC = () => {
-  const isIngredientsLoading = useSelector(getIsIngredientsLoading);
+  const isIngredientsLoading = useSelector(getIsIngredientsLoadingSelector);
   return (
     <>
       {isIngredientsLoading ? (
