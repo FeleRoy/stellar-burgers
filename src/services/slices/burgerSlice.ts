@@ -1,4 +1,4 @@
-import { getIngredientsApi, orderBurgerApi } from '@api';
+import { getIngredientsApi, getOrderByNumberApi, orderBurgerApi } from '@api';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 
@@ -9,6 +9,10 @@ export const getIngredients = createAsyncThunk(
 export const orderBurger = createAsyncThunk(
   'burger/orderBurger',
   async (data: string[]) => orderBurgerApi(data)
+);
+export const getOrderByNumber = createAsyncThunk(
+  'feed/getOrderByNumber',
+  async (number: number) => getOrderByNumberApi(number)
 );
 
 interface burgerState {
@@ -21,6 +25,7 @@ interface burgerState {
   };
   orderRequest: boolean;
   orderModalData: TOrder | null;
+  selectedOrder: TOrder | null;
 }
 
 const initialState: burgerState = {
@@ -32,7 +37,8 @@ const initialState: burgerState = {
     ingredients: []
   },
   orderRequest: false,
-  orderModalData: null
+  orderModalData: null,
+  selectedOrder: null
 };
 
 export const burgerSlice = createSlice({
@@ -93,6 +99,9 @@ export const burgerSlice = createSlice({
       };
       state.orderRequest = false;
       state.orderModalData = null;
+    },
+    clearSelectedOrder: (state) => {
+      state.selectedOrder = null;
     }
   },
   selectors: {
@@ -100,7 +109,8 @@ export const burgerSlice = createSlice({
     getIsIngredientsLoadingSelector: (state) => state.isIngredientsLoading,
     getConstructorItemsSelector: (state) => state.constructorItems,
     getOrderRequestSelector: (state) => state.orderRequest,
-    getOrderModalDataSelector: (state) => state.orderModalData
+    getOrderModalDataSelector: (state) => state.orderModalData,
+    getSelectedOrderSelector: (state) => state.selectedOrder
   },
   extraReducers: (builder) => {
     builder
@@ -129,6 +139,19 @@ export const burgerSlice = createSlice({
       .addCase(orderBurger.fulfilled, (state, action) => {
         state.orderRequest = false;
         state.orderModalData = action.payload.order;
+      })
+      //========OrderByNumber====================
+      .addCase(getOrderByNumber.pending, (state) => {
+        state.orderRequest = true;
+        state.error = null;
+      })
+      .addCase(getOrderByNumber.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.orderRequest = false;
+      })
+      .addCase(getOrderByNumber.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.selectedOrder = action.payload.orders[0];
       });
   }
 });
@@ -138,12 +161,14 @@ export const {
   getIsIngredientsLoadingSelector,
   getConstructorItemsSelector,
   getOrderRequestSelector,
-  getOrderModalDataSelector
+  getOrderModalDataSelector,
+  getSelectedOrderSelector
 } = burgerSlice.selectors;
 
 export const {
   addIngredient,
   moveСonstructorIngredient,
   deleteСonstructorIngredient,
-  closeOrderModalAction
+  closeOrderModalAction,
+  clearSelectedOrder
 } = burgerSlice.actions;

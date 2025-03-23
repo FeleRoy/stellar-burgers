@@ -17,7 +17,10 @@ import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../ProtectedRoute';
 import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
-import { getIngredients } from '../../services/slices/burgerSlice';
+import {
+  clearSelectedOrder,
+  getIngredients
+} from '../../services/slices/burgerSlice';
 import { getFeeds } from '../../services/slices/feedSlice';
 import {
   getOrders,
@@ -76,6 +79,7 @@ const App = () => {
                   title='Детали заказа'
                   onClose={() => {
                     navigate(-1);
+                    dispatch(clearSelectedOrder());
                   }}
                 >
                   <OrderInfo />
@@ -100,9 +104,10 @@ const App = () => {
                 path='/profile/orders/:number'
                 element={
                   <Modal
-                    title='#number'
+                    title='Детали заказа'
                     onClose={() => {
                       navigate(-1);
+                      dispatch(clearSelectedOrder());
                     }}
                   >
                     <OrderInfo />
