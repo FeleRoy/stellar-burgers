@@ -1,10 +1,14 @@
-import { getIngredientsApi } from '@api';
+import { getIngredientsApi, orderBurgerApi } from '@api';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 
 export const getIngredients = createAsyncThunk(
   'ingredient/getIngredients',
   async () => getIngredientsApi()
+);
+export const orderBurger = createAsyncThunk(
+  'burger/orderBurger',
+  async (data: string[]) => orderBurgerApi(data)
 );
 
 interface burgerState {
@@ -81,6 +85,14 @@ export const burgerSlice = createSlice({
     },
     deleteСonstructorIngredient: (state, action: PayloadAction<number>) => {
       state.constructorItems.ingredients.splice(action.payload, 1);
+    },
+    closeOrderModalAction: (state) => {
+      state.constructorItems = {
+        bun: null,
+        ingredients: []
+      };
+      state.orderRequest = false;
+      state.orderModalData = null;
     }
   },
   selectors: {
@@ -92,6 +104,7 @@ export const burgerSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      //==========getIngredients===============
       .addCase(getIngredients.pending, (state) => {
         state.isIngredientsLoading = true;
         state.error = null;
@@ -103,6 +116,19 @@ export const burgerSlice = createSlice({
       .addCase(getIngredients.fulfilled, (state, action) => {
         state.isIngredientsLoading = false;
         state.ingredients = action.payload;
+      })
+      //=========orderBurger===================
+      .addCase(orderBurger.pending, (state) => {
+        state.orderRequest = true;
+        state.error = null;
+      })
+      .addCase(orderBurger.rejected, (state, action) => {
+        state.orderRequest = false;
+        state.error = action.error.message;
+      })
+      .addCase(orderBurger.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.orderModalData = action.payload.order;
       });
   }
 });
@@ -118,5 +144,6 @@ export const {
 export const {
   addIngredient,
   moveСonstructorIngredient,
-  deleteСonstructorIngredient
+  deleteСonstructorIngredient,
+  closeOrderModalAction
 } = burgerSlice.actions;

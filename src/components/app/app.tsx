@@ -15,10 +15,15 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../ProtectedRoute';
-import { useDispatch } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
 import { getIngredients } from '../../services/slices/burgerSlice';
 import { getFeeds } from '../../services/slices/feedSlice';
+import {
+  getOrders,
+  getUser,
+  getUserSelector
+} from '../../services/slices/userSlice';
 
 const App = () => {
   const location = useLocation();
@@ -29,7 +34,8 @@ const App = () => {
   useEffect(() => {
     dispatch(getIngredients());
     dispatch(getFeeds());
-  }, [dispatch]);
+    dispatch(getUser());
+  }, []);
 
   return (
     <>
@@ -38,14 +44,19 @@ const App = () => {
         <Routes location={backgroundLocation || location}>
           <Route path='/' element={<ConstructorPage />} />
           <Route path='/feed' element={<Feed />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<ProtectedRoute />}>
+          <Route path='/login' element={<ProtectedRoute onlyUnAuth />}>
+            <Route path='/login' element={<Login />} />
+          </Route>
+          <Route path='/register' element={<ProtectedRoute onlyUnAuth />}>
             <Route path='/register' element={<Register />} />
           </Route>
-          <Route path='/forgot-password' element={<ProtectedRoute />}>
+          <Route
+            path='/forgot-password'
+            element={<ProtectedRoute onlyUnAuth />}
+          >
             <Route path='/forgot-password' element={<ForgotPassword />} />
           </Route>
-          <Route path='/reset-password' element={<ProtectedRoute />}>
+          <Route path='/reset-password' element={<ProtectedRoute onlyUnAuth />}>
             <Route path='/reset-password' element={<ResetPassword />} />
           </Route>
           <Route path='/profile' element={<ProtectedRoute />}>
