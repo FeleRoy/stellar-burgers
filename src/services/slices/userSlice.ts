@@ -129,6 +129,7 @@ export const userSlice = createSlice({
         deleteCookie('accessToken');
         localStorage.removeItem('refreshToken');
         state.isAuthChecked = false;
+        state.user = { name: '', email: '' };
       })
       //=========getUser===============
       .addCase(getUser.pending, (state) => {
