@@ -36,7 +36,6 @@ const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getIngredients());
-    dispatch(getFeeds());
     dispatch(getUser());
   }, []);
 

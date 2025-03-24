@@ -14,6 +14,9 @@ export const Feed: FC = () => {
   const orders: TOrder[] = useSelector(getOrdersSelector);
   const dispatch = useDispatch();
   const isLoading = useSelector(getIsLoading);
+  useEffect(() => {
+    dispatch(getFeeds());
+  }, []);
   const handleGetFeeds = () => {
     dispatch(getFeeds());
   };
