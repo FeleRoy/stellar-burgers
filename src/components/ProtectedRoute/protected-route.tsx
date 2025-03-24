@@ -26,7 +26,7 @@ export const ProtectedRoute = ({ onlyUnAuth }: ProtectedRouteProps) => {
   }
   if (onlyUnAuth && user.name) {
     const from = location.state?.from || { pathname: '/' };
-    return <Navigate replace to={from} />;
+    return <Navigate replace to={from} state={location} />;
   }
 
   return <Outlet />;

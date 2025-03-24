@@ -33,6 +33,7 @@ interface userState {
   user: TUser;
   isAuthChecked: boolean;
   loading: boolean;
+  userLoading: boolean;
   error: string | undefined;
   loginError: string | undefined;
   registerError: string | undefined;
@@ -46,7 +47,8 @@ const initialState: userState = {
   error: undefined,
   orders: [],
   loginError: undefined,
-  registerError: undefined
+  registerError: undefined,
+  userLoading: false
 };
 
 export const userSlice = createSlice({
@@ -64,7 +66,8 @@ export const userSlice = createSlice({
     getLoadingSelector: (state) => state.loading,
     getLoginErrorSelector: (state) => state.loginError,
     getRegisterErrorSelector: (state) => state.registerError,
-    getOrdersSelector: (state) => state.orders
+    getOrdersSelector: (state) => state.orders,
+    getUserLoadingSelector: (state) => state.userLoading
   },
   extraReducers: (builder) => {
     builder
@@ -119,14 +122,17 @@ export const userSlice = createSlice({
       //=========getUser===============
       .addCase(getUser.pending, (state) => {
         state.loading = true;
+        state.userLoading = true;
         state.error = undefined;
       })
       .addCase(getUser.rejected, (state, action) => {
-        state.error = action.error.message;
         state.loading = false;
+        state.error = action.error.message;
+        state.userLoading = false;
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.loading = false;
+        state.userLoading = false;
         state.user = action.payload.user;
         state.isAuthChecked = true;
       })
@@ -167,7 +173,8 @@ export const {
   getLoadingSelector,
   getLoginErrorSelector,
   getRegisterErrorSelector,
-  getOrdersSelector
+  getOrdersSelector,
+  getUserLoadingSelector
 } = userSlice.selectors;
 
 export const { clearErrors } = userSlice.actions;

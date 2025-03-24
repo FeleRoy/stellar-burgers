@@ -12,7 +12,6 @@ import { useParams } from 'react-router-dom';
 import { getOrdersSelector } from '../../services/slices/feedSlice';
 
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
   const { number } = useParams<'number'>();
   const orderData = useSelector(getSelectedOrderSelector);
   const dispatch = useDispatch();

@@ -27,6 +27,7 @@ import {
   getLoadingSelector,
   getOrders,
   getUser,
+  getUserLoadingSelector,
   getUserSelector
 } from '../../services/slices/userSlice';
 import { Preloader } from '@ui';
@@ -34,13 +35,18 @@ import { Preloader } from '@ui';
 const App = () => {
   const location = useLocation();
   const backgroundLocation = location.state?.background;
-
+  const loading = useSelector(getUserLoadingSelector);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(getIngredients());
     dispatch(getUser());
-  }, []);
+    dispatch(getIngredients());
+  }, [dispatch]);
+
+  if (loading) {
+    return <Preloader />;
+  }
 
   return (
     <>
