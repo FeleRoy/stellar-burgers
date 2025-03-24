@@ -19,14 +19,17 @@ import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
 import {
   clearSelectedOrder,
-  getIngredients
+  getIngredients,
+  getIsIngredientsLoadingSelector
 } from '../../services/slices/burgerSlice';
 import { getFeeds } from '../../services/slices/feedSlice';
 import {
+  getLoadingSelector,
   getOrders,
   getUser,
   getUserSelector
 } from '../../services/slices/userSlice';
+import { Preloader } from '@ui';
 
 const App = () => {
   const location = useLocation();
@@ -64,6 +67,7 @@ const App = () => {
           <Route path='/profile' element={<ProtectedRoute />}>
             <Route path='/profile' element={<Profile />} />
             <Route path='/profile/orders' element={<ProfileOrders />} />
+            <Route path='/profile/orders/:number' element={<OrderInfo />} />
           </Route>
           <Route path='/ingredients/:id' element={<IngredientDetails />} />
           <Route path='/feed/:number' element={<OrderInfo />} />

@@ -18,9 +18,9 @@ export const ProtectedRoute = ({ onlyUnAuth }: ProtectedRouteProps) => {
   const location = useLocation();
   const loading = useSelector(getLoadingSelector);
 
-  // if (!isAuthChecked && loading) {
-  //   return <Preloader />;
-  // }
+  if (!isAuthChecked && loading) {
+    return <Preloader />;
+  }
   if (!onlyUnAuth && !user.name) {
     return <Navigate replace to='/login' state={{ from: location }} />;
   }

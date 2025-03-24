@@ -129,27 +129,33 @@ export const burgerSlice = createSlice({
       })
       //=========orderBurger===================
       .addCase(orderBurger.pending, (state) => {
+        state.isIngredientsLoading = true;
         state.orderRequest = true;
         state.error = null;
       })
       .addCase(orderBurger.rejected, (state, action) => {
+        state.isIngredientsLoading = false;
         state.orderRequest = false;
         state.error = action.error.message;
       })
       .addCase(orderBurger.fulfilled, (state, action) => {
+        state.isIngredientsLoading = false;
         state.orderRequest = false;
         state.orderModalData = action.payload.order;
       })
       //========OrderByNumber====================
       .addCase(getOrderByNumber.pending, (state) => {
+        state.isIngredientsLoading = true;
         state.orderRequest = true;
         state.error = null;
       })
       .addCase(getOrderByNumber.rejected, (state, action) => {
+        state.isIngredientsLoading = false;
         state.error = action.error.message;
         state.orderRequest = false;
       })
       .addCase(getOrderByNumber.fulfilled, (state, action) => {
+        state.isIngredientsLoading = false;
         state.orderRequest = false;
         state.selectedOrder = action.payload.orders[0];
       });
