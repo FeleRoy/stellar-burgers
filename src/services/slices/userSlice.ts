@@ -14,35 +14,20 @@ import {
   updateUserApi
 } from '@api';
 
-export const registerUser = createAsyncThunk(
-  'user/register',
-  async (data: TRegisterData) => registerUserApi(data)
-);
-export const loginUser = createAsyncThunk(
-  'user/login',
-  async (data: TLoginData) => loginUserApi(data)
-);
-export const logoutUser = createAsyncThunk('user/logout', async () =>
-  logoutApi()
-);
+export const registerUser = createAsyncThunk('user/register', registerUserApi);
+export const loginUser = createAsyncThunk('user/login', loginUserApi);
+export const logoutUser = createAsyncThunk('user/logout', logoutApi);
 export const forgotPassword = createAsyncThunk(
   'user/forgotpassword',
-  async (data: { email: string }) => forgotPasswordApi(data)
+  forgotPasswordApi
 );
 export const resetPassword = createAsyncThunk(
   'user/resetPassword',
-  async (data: { password: string; token: string }) => resetPasswordApi(data)
+  resetPasswordApi
 );
-export const getUser = createAsyncThunk('user/getUser', async () =>
-  getUserApi()
-);
-export const updateUser = createAsyncThunk(
-  'user/updateUser',
-  async (data: Partial<TRegisterData>) => updateUserApi(data)
-);
-export const getOrders = createAsyncThunk('user/getOrders', async () =>
-  getOrdersApi()
-);
+export const getUser = createAsyncThunk('user/getUser', getUserApi);
+export const updateUser = createAsyncThunk('user/updateUser', updateUserApi);
+export const getOrders = createAsyncThunk('user/getOrders', getOrdersApi);
 
 interface userState {
   user: TUser;

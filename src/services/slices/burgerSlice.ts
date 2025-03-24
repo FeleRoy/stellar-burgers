@@ -4,15 +4,15 @@ import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 
 export const getIngredients = createAsyncThunk(
   'ingredient/getIngredients',
-  async () => getIngredientsApi()
+  getIngredientsApi
 );
 export const orderBurger = createAsyncThunk(
   'burger/orderBurger',
-  async (data: string[]) => orderBurgerApi(data)
+  orderBurgerApi
 );
 export const getOrderByNumber = createAsyncThunk(
   'feed/getOrderByNumber',
-  async (number: number) => getOrderByNumberApi(number)
+  getOrderByNumberApi
 );
 
 interface burgerState {
