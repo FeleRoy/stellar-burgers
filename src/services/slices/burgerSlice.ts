@@ -129,17 +129,14 @@ export const burgerSlice = createSlice({
       })
       //=========orderBurger===================
       .addCase(orderBurger.pending, (state) => {
-        state.isIngredientsLoading = true;
         state.orderRequest = true;
         state.error = null;
       })
       .addCase(orderBurger.rejected, (state, action) => {
-        state.isIngredientsLoading = false;
         state.orderRequest = false;
         state.error = action.error.message;
       })
       .addCase(orderBurger.fulfilled, (state, action) => {
-        state.isIngredientsLoading = false;
         state.orderRequest = false;
         state.orderModalData = action.payload.order;
       })

@@ -14,10 +14,6 @@ export const Register: FC = () => {
   const [password, setPassword] = useState('');
   const error = useSelector(getRegisterErrorSelector);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const user = useSelector(getUserSelector);
-  const location = useLocation();
-  const { from } = location.state || { from: { pathname: '/' } };
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -25,12 +21,6 @@ export const Register: FC = () => {
       registerUser({ name: userName, email: email, password: password })
     );
   };
-
-  useEffect(() => {
-    if (user.name) {
-      navigate(from.pathname, { replace: true });
-    }
-  }, [user, navigate]);
 
   return (
     <RegisterUI

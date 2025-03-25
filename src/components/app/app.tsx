@@ -19,34 +19,21 @@ import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
 import {
   clearSelectedOrder,
-  getIngredients,
-  getIsIngredientsLoadingSelector
+  getIngredients
 } from '../../services/slices/burgerSlice';
-import { getFeeds } from '../../services/slices/feedSlice';
-import {
-  getLoadingSelector,
-  getOrders,
-  getUser,
-  getUserLoadingSelector,
-  getUserSelector
-} from '../../services/slices/userSlice';
-import { Preloader } from '@ui';
+import { checkUserAuth } from '../../services/slices/userSlice';
 
 const App = () => {
   const location = useLocation();
   const backgroundLocation = location.state?.background;
-  const loading = useSelector(getUserLoadingSelector);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUser());
+    dispatch(checkUserAuth());
     dispatch(getIngredients());
   }, [dispatch]);
-
-  if (loading) {
-    return <Preloader />;
-  }
 
   return (
     <>

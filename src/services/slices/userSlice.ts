@@ -9,10 +9,12 @@ import {
   logoutApi,
   registerUserApi,
   resetPasswordApi,
-  TLoginData,
-  TRegisterData,
   updateUserApi
 } from '@api';
+import {
+  AsyncThunkConfig,
+  GetThunkAPI
+} from '@reduxjs/toolkit/dist/createAsyncThunk';
 
 export const registerUser = createAsyncThunk('user/register', registerUserApi);
 export const loginUser = createAsyncThunk('user/login', loginUserApi);
@@ -29,11 +31,23 @@ export const getUser = createAsyncThunk('user/getUser', getUserApi);
 export const updateUser = createAsyncThunk('user/updateUser', updateUserApi);
 export const getOrders = createAsyncThunk('user/getOrders', getOrdersApi);
 
+export const checkUserAuth = createAsyncThunk(
+  'user/checkUserAuth',
+  async (_, { dispatch }: GetThunkAPI<AsyncThunkConfig>) => {
+    if (getCookie('accessToken')) {
+      getUserApi()
+        .then((user) => dispatch(setUser(user.user)))
+        .finally(() => dispatch(setIsAuthChecked(true)));
+    } else {
+      dispatch(setIsAuthChecked(true));
+    }
+  }
+);
+
 interface userState {
-  user: TUser;
+  user: TUser | null;
   isAuthChecked: boolean;
   loading: boolean;
-  userLoading: boolean;
   error: string | undefined;
   loginError: string | undefined;
   registerError: string | undefined;
@@ -41,14 +55,13 @@ interface userState {
 }
 
 const initialState: userState = {
-  user: { name: '', email: '' },
+  user: null,
   isAuthChecked: false,
   loading: false,
   error: undefined,
   orders: [],
   loginError: undefined,
-  registerError: undefined,
-  userLoading: false
+  registerError: undefined
 };
 
 export const userSlice = createSlice({
@@ -57,6 +70,12 @@ export const userSlice = createSlice({
   reducers: {
     clearErrors: (state) => {
       state.error = '';
+    },
+    setIsAuthChecked: (state, action: PayloadAction<boolean>) => {
+      state.isAuthChecked = action.payload;
+    },
+    setUser: (state, action: PayloadAction<TUser>) => {
+      state.user = action.payload;
     }
   },
   selectors: {
@@ -66,8 +85,7 @@ export const userSlice = createSlice({
     getLoadingSelector: (state) => state.loading,
     getLoginErrorSelector: (state) => state.loginError,
     getRegisterErrorSelector: (state) => state.registerError,
-    getOrdersSelector: (state) => state.orders,
-    getUserLoadingSelector: (state) => state.userLoading
+    getOrdersSelector: (state) => state.orders
   },
   extraReducers: (builder) => {
     builder
@@ -85,7 +103,7 @@ export const userSlice = createSlice({
         state.user = action.payload.user;
         localStorage.setItem('refreshToken', action.payload.refreshToken);
         setCookie('accessToken', action.payload.accessToken);
-        state.isAuthChecked = true;
+        // state.isAuthChecked = true;
       })
       //=========login===============
       .addCase(loginUser.pending, (state) => {
@@ -101,7 +119,7 @@ export const userSlice = createSlice({
         state.user = action.payload.user;
         localStorage.setItem('refreshToken', action.payload.refreshToken);
         setCookie('accessToken', action.payload.accessToken);
-        state.isAuthChecked = true;
+        // state.isAuthChecked = true;
       })
       //=========logout===============
       .addCase(logoutUser.pending, (state) => {
@@ -122,19 +140,16 @@ export const userSlice = createSlice({
       //=========getUser===============
       .addCase(getUser.pending, (state) => {
         state.loading = true;
-        state.userLoading = true;
         state.error = undefined;
       })
       .addCase(getUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
-        state.userLoading = false;
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.userLoading = false;
         state.user = action.payload.user;
-        state.isAuthChecked = true;
+        // state.isAuthChecked = true;
       })
       //=========updateUser===============
       .addCase(updateUser.pending, (state) => {
@@ -173,8 +188,7 @@ export const {
   getLoadingSelector,
   getLoginErrorSelector,
   getRegisterErrorSelector,
-  getOrdersSelector,
-  getUserLoadingSelector
+  getOrdersSelector
 } = userSlice.selectors;
 
-export const { clearErrors } = userSlice.actions;
+export const { clearErrors, setIsAuthChecked, setUser } = userSlice.actions;
