@@ -10,7 +10,10 @@ import {
   orderBurger
 } from '../../services/slices/burgerSlice';
 import { useNavigate } from 'react-router-dom';
-import { getIsAuthCheckedSelector } from '../../services/slices/userSlice';
+import {
+  getIsAuthCheckedSelector,
+  getUserSelector
+} from '../../services/slices/userSlice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
@@ -18,14 +21,14 @@ export const BurgerConstructor: FC = () => {
   const orderRequest = useSelector(getOrderRequestSelector);
   const orderModalData = useSelector(getOrderModalDataSelector);
 
-  const isAuthChecked = useSelector(getIsAuthCheckedSelector);
+  const user = useSelector(getUserSelector);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
-    if (!isAuthChecked) {
+    if (!user) {
       return navigate('/login');
     }
     const orderIngredients = constructorItems.ingredients.map(
